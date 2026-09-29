@@ -748,5 +748,25 @@ document.addEventListener('click',e=>{
   const g=e.target.closest('[data-go]');if(g){const id=g.dataset.go;const nav=NAV.some(n=>n[0]===id);go(id,{noHist:false});return}
 });
 try{const t=localStorage.getItem('sj-theme');if(t&&t!=='auto')setTheme(t)}catch(e){}
-buildIndex();render();
+function fitPhone(){
+  const phone=$('#phone');if(!phone)return;
+  if(window.innerWidth<=520){phone.style.width='';return}
+  const stage=document.querySelector('.stage'),idx=document.querySelector('.index');
+  if(!stage)return;
+  const cs=getComputedStyle(stage);
+  const padX=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight);
+  const padY=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom);
+  const gap=parseFloat(cs.gap)||0;
+  const idxVisible=idx&&getComputedStyle(idx).display!=='none';
+  const idxW=idxVisible?idx.getBoundingClientRect().width+gap:0;
+  const availW=stage.clientWidth-padX-idxW;
+  const availH=stage.clientHeight-padY;
+  const ratio=392/844;
+  let w=Math.min(392,availW,availH*ratio);
+  w=Math.max(w,220);
+  phone.style.width=w.toFixed(1)+'px';
+}
+window.addEventListener('resize',fitPhone);
+buildIndex();render();fitPhone();
+setTimeout(fitPhone,60);
 </script>
