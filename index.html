@@ -763,7 +763,8 @@ function fitPhone(){
   const availH=stage.clientHeight-padY;
   const naturalW=412,naturalH=864; // .phone's unzoomed rendered box: 392x844 design size + 10px border on each side
   let z=Math.min(availW/naturalW,availH/naturalH,1.4);
-  z=Math.max(z,0.55);
+  z=z*0.8; // calibrated against a real 1920x1080 @125% Windows scale laptop in Brave: fit-to-space alone still rendered visibly too large, 80% of that matched what looked right
+  z=Math.max(z,0.45);
   phone.style.zoom=z.toFixed(3);
 }
 window.addEventListener('resize',fitPhone);
